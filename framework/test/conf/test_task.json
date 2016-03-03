@@ -1,0 +1,6 @@
+{
+	"module_name":"ntask_test",
+	"module_type": "app",
+	"enable": 1,
+	"methods": ["new_task","new_bgjob","new_timer","cancel_task","cancel_bgjob","cancel_timer"]
+}

@@ -1,0 +1,5 @@
+{
+	"module_name":"test_post1",
+	"module_type": "post_app",
+	"module_break_on": "no"
+}

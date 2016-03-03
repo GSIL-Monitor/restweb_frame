@@ -1,0 +1,41 @@
+{
+	"group_name": "test_redis",
+	"group_policy": "cshash",
+	"group_protocol": "redis",
+	"group_policy_so_name": "libcnavipolicy.so",
+	"connect_timeout_ms": 200,
+	"rw_timeout_ms": 200,
+	"idle_pool_max": 20,
+	"idle_timeout_ms": 50000,
+	"cshash_prefix_flag":"::",
+	"servers": {
+		"server1": {
+			"repl_set":[
+				{	
+					"host": "10.10.59.35",
+					"port": 6395
+				},
+				{	
+					"host": "10.10.59.35",
+					"port": 6396
+				}
+			],
+			"server_type":"redis_rs",
+			"repl_check_interval":3,
+			"resolve_interval":30,
+			"fail_dura":3,
+			"fail_limit":5,
+			"weight": 10
+		},
+		"server2": {
+			"host": "10.10.59.21",
+			"port": 6378,
+			"weight": 30
+		},
+		"server3": {
+			"host": "10.10.59.21",
+			"port": 6377,
+			"weight": 15 
+		}
+	}
+}

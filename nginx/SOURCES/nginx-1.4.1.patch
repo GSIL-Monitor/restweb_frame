@@ -1,0 +1,14 @@
+diff -Naur nginx-1.4.1/src/http/ngx_http_request.h nginx-1.4.1-new/src/http/ngx_http_request.h
+--- nginx-1.4.1/src/http/ngx_http_request.h	2013-05-06 18:26:50.000000000 +0800
++++ nginx-1.4.1-new/src/http/ngx_http_request.h	2015-04-10 11:26:11.031280546 +0800
+@@ -437,8 +437,8 @@
+ 
+     ngx_http_cleanup_t               *cleanup;
+ 
+-    unsigned                          subrequests:8;
+-    unsigned                          count:8;
++    unsigned                          subrequests;
++    unsigned                          count;
+     unsigned                          blocked:8;
+ 
+     unsigned                          aio:1;

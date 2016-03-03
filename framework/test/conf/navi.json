@@ -1,0 +1,7 @@
+{
+	"service_name": "test_service",
+	"module_so_dir": "/opt/lilei/src/libcnavi/test/",
+	"prev_basic_chain": ["test_prev1","test_prev2"],
+	"post_basic_chain": ["test_post1", "test_post2"],
+	"log_level": "debug"
+}

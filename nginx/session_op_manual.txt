@@ -1,0 +1,89 @@
+#########################################################################
+#
+#  FileName    :   session_op_manual.txt
+#  Description :   session服务运维手册
+#  Creator     :   彭锦臻, 2012-08-02
+#  Version     :   1.0
+#  Comment     :   
+#
+#########################################################################
+
+#########################################################################
+# session相关机器
+session线上nginx机器（共5台）		10.103.26.131~135		nginx前端机器	115G硬盘,24core,16G内存
+session线上redisdb机器（共6台）	10.103.26.121~126		存session（不持久化）	115G硬盘,4core,32G内存
+#########################################################################
+
+#########################################################################
+# session相关机器部署
+#################################
+部署session线上redisdb机器：
+1. 安装rpm包
+	yum  -y install redisdb
+2. 部署脚本代码
+	mkdir -p /opt/rest/code
+	svn co http://dev.1verge.net/svn/navi /opt/rest/code/Navi
+	cp /opt/rest/code/Navi/local.php.simple /opt/rest/code/Navi/local.php
+3. 修改配置及环境
+	3.1 修改redisdb的配置文件
+		vi /etc/redisdb.conf
+			修改客户端链接空闲超时时间（timeout 300 => timeout 600），
+			修改redis最大可用内存数为7GB（maxmemory 7GB），
+			修改redis的LRU淘汰机制（maxmemory-policy allkeys-lru）。
+		vi /etc/redisdb/leveldb.conf
+			修改is_enable的值为0，数据不持久化到leveldb中。
+	3.2 实例化四份redisdb slave实例，并修改相应配置
+		cd /opt/rest/code/Navi/sync_server/redisdb/slave
+		vi redisdb_instances.conf
+			修改配置为：
+			slave1  6371
+			slave2  6372
+			slave3  6373
+			slave4  6374
+		/bin/sh ./create_multi_redisdb_instance.sh
+			运行脚本，创建实例。
+		/bin/sh ./modify_redisdb_work_dir.sh
+			运行脚本，修改redisdb默认工作目录。
+4. 启动服务
+	/etc/init.d/redisdb_slave1 start
+	/etc/init.d/redisdb_slave2 start
+	/etc/init.d/redisdb_slave3 start
+	/etc/init.d/redisdb_slave4 start
+#################################
+
+#################################
+部署session线上nginx机器：
+1. 安装rpm包
+	yum install -y libnaviutil libsession nginx_navi libredisproxy jansson
+2. 修改配置及环境
+	2.1 修改libnaviutil的配置文件
+		vim /etc/nginx/conf.d/restapi.conf
+			listen：session服务监听端口，默认为8080，可根据需要更改。
+			check_interval：配置文件自动检查时间间隔，一般不用动。
+			其它配置项不用动。
+	2.2 修改libsession的配置文件
+		vim /etc/restmodule/session.json
+			module_name：session服务的模块名，不用更改。
+			enable：是否开户session服务，1为开启，0为来开启。
+			redis_group：session服务的redis配置组名，不用更改。
+			max_key_len：session服务key值的最大长度，一般不用动。
+			max_value_len：session服务value值的最大长度，一般不用动。
+			ssid_expire_time：session服务key值的超时时间，单位是秒，可根据需要更改。
+	2.3 修改nginx配置文件
+		vim /etc/nginx/nginx.conf
+			一般不用修改，运维可根据线上机器实际情况做调整。
+	2.4 修改redisproxy配置文件
+		vim /etc/redisproxy/redis_server_list.json
+			加入一组redis服务器的配置，组名为session，示例如下：
+			"session":{
+                "10.10.xxx.xxx":{
+                        "host":"10.10.xxx.xxx",
+                        "port":6379,
+                        "timeout":25,
+                        "try_connect":2,
+                        "sockbuflen":32768,
+                        "desc":"test server 1",
+                        "weight":60
+                }
+        }
+#################################

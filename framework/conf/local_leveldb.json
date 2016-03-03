@@ -1,0 +1,18 @@
+{
+        "group_name": "_local_leveldb",
+        "group_policy": "cshash",
+        "group_protocol": "redis",
+        "group_policy_so_name": "libcnavipolicy.so",
+        "connect_timeout_ms": 1000,
+        "rw_timeout_ms": 1000,
+        "idle_pool_max": 100,
+        "idle_timeout_ms": 10000,
+        "cshash_prefix_flag":"::",
+        "servers": {
+                "navi_local_leveldb": {
+                        "server_type": "local",
+                        "unix_path": "/tmp/navi_local_leveldb.sock",
+                        "weight": 10
+                }
+        }
+}

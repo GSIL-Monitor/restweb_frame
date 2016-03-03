@@ -1,0 +1,5 @@
+{
+	"http_driver_path": "/nv_httpproxy",
+	"gr_driver_path": "/nv_grproxy",
+	"policy_so_dir": "/usr/lib64/cnavimodules/upgroups"
+}

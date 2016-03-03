@@ -1,0 +1,8 @@
+
+location /nv_grproxy {
+	navi_ds_pass;
+}
+
+location /nv_httpproxy {
+ 	proxy_pass http://navi_ds/;
+}

@@ -1,0 +1,18 @@
+ngx_feature="http_navi_module"
+ngx_feature_name=
+ngx_feature_run=no
+ngx_feature_incs=
+ngx_feature_path=
+ngx_feature_libs=
+ngx_feature_test=
+ 
+ngx_addon_name=ngx_http_navi_module
+HTTP_AUX_FILTER_MODULES="$HTTP_AUX_FILTER_MODULES ngx_http_navi_module"
+CORE_LIBS="$CORE_LIBS -lcnavi -lcnavidriver -ljansson -ldl"
+CORE_INCS="$CORE_INCS \
+	$ngx_addon_dir/src /usr/include/cnavi /usr/include/cnavitask /usr/include/cnaviutil"	
+NGX_ADDON_SRCS="$NGX_ADDON_SRCS \
+	${ngx_addon_dir}/src/ngx_http_navi_module.c"
+	
+have=NGX_HTTP_HEADERS . auto/have
+. auto/feature

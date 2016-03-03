@@ -1,0 +1,9 @@
+{
+        "module_name":"name",
+        "module_type": "prev_app",
+        "enable": 1,
+        "other_config":{...},
+        "other_config2": 1,
+        "allow_request_conclude":false,
+        "allow_request_decline":false
+}

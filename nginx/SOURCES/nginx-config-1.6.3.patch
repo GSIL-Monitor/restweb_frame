@@ -1,0 +1,88 @@
+diff -Naur conf.orig/nginx.conf conf/nginx.conf
+--- conf.orig/nginx.conf	2015-04-07 23:58:37.000000000 +0800
++++ conf/nginx.conf	2015-07-21 13:15:06.743782690 +0800
+@@ -1,16 +1,27 @@
+ 
+-#user  nobody;
+-worker_processes  1;
++user  nginx;
++worker_processes  24;
++worker_rlimit_nofile 10000;
++working_directory /tmp;
++worker_rlimit_core 40000000000;
+ 
+ #error_log  logs/error.log;
+ #error_log  logs/error.log  notice;
+ #error_log  logs/error.log  info;
+ 
+ #pid        logs/nginx.pid;
++pid        /var/run/nginx.pid;
+ 
++error_log  /var/log/nginx/error.log;
++#error_log  /var/log/nginx/error.log  notice;
++#error_log  /var/log/nginx/error.log  info;
++
++#daemon off;
++#master_process on;
+ 
+ events {
+-    worker_connections  1024;
++    worker_connections  2048;
++	use epoll;
+ }
+ 
+ 
+@@ -18,11 +29,11 @@
+     include       mime.types;
+     default_type  application/octet-stream;
+ 
+-    #log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
+-    #                  '$status $body_bytes_sent "$http_referer" '
+-    #                  '"$http_user_agent" "$http_x_forwarded_for"';
++    log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
++                      '$status $body_bytes_sent "$http_referer" '
++                      '"$http_user_agent" "$http_x_forwarded_for"';
+ 
+-    #access_log  logs/access.log  main;
++    access_log  /var/log/nginx/access.log  main;
+ 
+     sendfile        on;
+     #tcp_nopush     on;
+@@ -30,20 +41,32 @@
+     #keepalive_timeout  0;
+     keepalive_timeout  65;
+ 
++	keepalive_requests 20;
++
++	limit_conn_zone   $binary_remote_addr  zone=addr:10m;
++
+     #gzip  on;
++    gzip  on;
++    gzip_static     on;
++    gzip_comp_level 5;
++    gzip_min_length 1024;
+ 
++	include /etc/nginx/conf.d/*.conf;
+     server {
+         listen       80;
+-        server_name  localhost;
++        #server_name  localhost;
++        server_name  _;
+ 
++		include /etc/nginx/conf.d/cnavi_addition_locs;
++		include /etc/nginx/conf.d/*.loc;
+         #charset koi8-r;
+ 
+         #access_log  logs/host.access.log  main;
+ 
+-        location / {
+-            root   html;
+-            index  index.html index.htm;
+-        }
++        #location / {
++        #    root   html;
++        #    index  index.html index.htm;
++        #}
+ 
+         #error_page  404              /404.html;
+ 

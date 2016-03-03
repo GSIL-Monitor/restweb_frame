@@ -1,0 +1,7 @@
+{
+        "module_name":"nrscheck",
+        "module_type": "post_app",
+        "enable": 1,
+        "allow_request_conclude":false,
+        "allow_request_decline":false
+}

@@ -1,0 +1,23 @@
+{
+	"service_name": "cnavi",
+	"module_so_dir": "/usr/lib64/",
+	"prev_basic_chain": [],
+	"post_basic_chain": ["nstatus"],
+	"enable_bigpost": true,
+	"log_level": "notice",
+	"scfile_mgrs":{
+        "/some/path1": {
+                "open_file_cache_max":1024,
+                "open_file_cache_min_uses":1,
+                "open_file_cache_valid":3600
+        },
+        "/some/path2": {
+                "open_file_cache_max":1024,
+                "open_file_cache_min_uses":1,
+                "open_file_cache_valid":3600
+        }
+	},
+	"mono_modules": ["some_module","ngrnode_status"],
+	"local_cache_group": "_local_redis",
+	"local_leveldb_group": "_local_leveldb"
+}

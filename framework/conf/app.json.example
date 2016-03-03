@@ -1,0 +1,7 @@
+{
+        "module_name":"name",
+        "module_type": "app",
+        "enable": 1,
+        "other_config":{...},
+        "other_config2": 1
+}

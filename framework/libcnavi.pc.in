@@ -1,0 +1,13 @@
+prefix=@prefix@
+exec_prefix=@exec_prefix@
+libdir=@libdir@
+includedir=@includedir@
+
+Name: libcnavi
+URL: http://gforge.1verge.net/
+Description: cnaviframe development programming interface
+Version: 6.0.0
+Libs: -L${libdir} -lcnavi -ljansson @LIBS@
+Libs.private: @LIBS@
+Cflags: -I${includedir}/cnavi -I${includedir}/cnaviproxy -I${includedir}/cnavitask -I${includedir}/cnaviutil
+
